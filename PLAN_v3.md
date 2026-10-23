@@ -230,6 +230,8 @@ Kept in place: `validated.tsv`, `audios_corpus/`, `output/work/` (WAVs + TextGri
 | when | what |
 |---|---|
 | 22.10.2026 | **done:** stages 4–9 rebuilt and run, 38 tests passing, `RESULTS.md` written |
+| 23.10.2026 | **done:** RESULTS.md checked against the tables, track check (visual), v3.1 run, project on GitHub (private) |
+| open | hand measurement of the 29 track-check vowels in Praat (Cristina) |
 | by 14.01.2027 | slides (made separately) |
 | 14.01.2027 | individual discussion slot with the lecturer |
 | 21/28.01.2027 | presentation of the experiment |

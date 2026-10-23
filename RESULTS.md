@@ -21,6 +21,11 @@ H1 and H2 were run three times on 2026-10-22, because the first two runs had mea
 (§6). The conclusions above hold in all three, and in the sensitivity analysis with the v2.0
 sex-based ceiling, except where §6 says otherwise.
 
+**v3.1** (2026-10-23, §9) reran everything with up to 40 clips per speaker instead of 8: H1
+8/10 equivalent, 0 different; H2 *d* = +0.23, *p* = 0.0495, and on the new clips alone
+*d* = +0.40, *p* = 0.003; H2a unchanged. It uses the same speakers, so it backs up the v3.0
+estimate but is not an independent replication.
+
 ---
 
 ## 1. Data
@@ -316,3 +321,85 @@ H2a does not depend on the vowel QC and is identical in all runs.
 | `fig_sibilants.png` | H2a: /s/ CoG by position and variety; weakening index |
 | `fig_ceilings.png` | chosen formant ceiling by declared sex |
 | `fig_data_flow.png` | corpus → tokens, and the QC funnel |
+
+---
+
+## 9. v3.1 — 40 clips per speaker (2026-10-23)
+
+Design in PLAN_v3.md §4.7, declared before the run. Same speakers and clip ranking, cap 40
+instead of 8, everything else as v3.0. Sources: `output_v31/tables/`, `output_v31/figures/`,
+log `output_v31/run_v31.log`.
+
+**How to read it** (as declared): the speakers are the same and the v3.0 clips are included,
+so this is not an independent replication. It shows whether the estimates hold with ~2.7× more
+data per speaker. v3.0 stays the planned result.
+
+### Data
+
+| | v3.0 | v3.1 |
+|---|---|---|
+| Clips aligned | 5,572 | 14,861 (13 failed) |
+| Vowel tokens after QC | 97,647 | 260,117 |
+| Usable speakers (Norte / Sur / México) | 388 / 161 / 249 | 391 / 164 / 253 |
+| Dropped by the vowel-triangle check | 7 | 4 |
+| H1 cells with \|*z*\| > 4 | 3 | 2 |
+| Speakers at the ceiling edges (4000 / 6500 Hz) | 40 / 26 | 40 / 30 |
+
+### H1 (`s6_h1_norte_sur.csv`)
+
+**8 of 10 measures equivalent within ±0.30, 0 different.** F2 /e/ (*d* = −0.17) and F2 /u/
+(*d* = +0.16) are inconclusive; both were equivalent in the final v3.0 run. The five measures
+that were inconclusive or fragile in v3.0 (F1 /a/, F1 /u/, F2 /a/, F2 /o/, F2 /i/) are all
+equivalent here. With the sex-based ceiling: 9 of 10 equivalent, 0 different.
+
+México control (`s6_h1_control.csv`) is clearer than in v3.0:
+
+| contrast | mean \|*d*\| | significant (Holm) |
+|---|---|---|
+| Norte vs Sur | 0.088 | 0 / 10 |
+| Norte vs México | 0.197 | 4 / 10 |
+| Sur vs México | 0.199 | 3 / 10 |
+
+The Spain–México differences are now 2.2× the Norte–Sur ones (1.2–1.5× in v3.0).
+
+### H2 (`s7_h2_*.csv`)
+
+| test | Sur | Norte | *d* | 95 % CI | *p* |
+|---|---|---|---|---|---|
+| **primary** (F1 shift, /e o/) | +0.100 (n = 132) | −0.016 (n = 281) | **+0.23** | [+0.01, +0.48] | **0.0495** |
+| new clips only (ranks 9–40) | +0.102 (n = 85) | −0.052 (n = 170) | +0.40 | [+0.15, +0.67] | 0.003 |
+| sex-based ceiling | +0.100 (n = 129) | −0.024 (n = 279) | +0.25 | [+0.01, +0.51] | 0.039 |
+
+Power for *d* = 0.23 at these n: 58 % (34 % in v3.0).
+
+Secondary (Holm): F1 shift /e/ Sur vs Norte *d* = +0.40, *p*_Holm = 0.009; México vs Sur
+*d* = −0.38, *p*_Holm = 0.009; /a/ +0.26 (0.095), F2 /a/ −0.25 (0.091), /o/ +0.09 (0.47),
+México vs Norte −0.20 (0.095).
+
+Descriptive F1 shift (plural − singular):
+
+| | /a/ | /e/ | /o/ |
+|---|---|---|---|
+| Norte | −0.26 | −0.03 | −0.01 |
+| Sur | −0.11 | **+0.16** | +0.04 |
+| México | −0.26 | −0.10 | −0.10 |
+
+The pattern is the v3.0 one, with tighter intervals. Sur /e/ opens before word-final /s/
+(+0.16 in both versions). For /a/, all three varieties close, and Sur less. México and Norte
+move together.
+
+### H2a (`s8_*.csv`)
+
+Coda CoG Norte 5001 vs Sur 4465 Hz, *d* = +0.49, *p*_Holm < 0.001; onset *d* = −0.05, n.s.;
+dialect × position +610 Hz, *p* < 0.001. Weakening index: Norte +100, México +383, Sur +704 Hz;
+Sur vs Norte *d* = +0.99. Same as v3.0.
+
+### What v3.1 adds to the claims
+
+- H1 is stronger: with more data per speaker, 8–9 of 10 measures are equivalent and the
+  México control separates more clearly.
+- H2 holds its size (*d* 0.19 → 0.23) and the primary test crosses *p* < 0.05, but only just
+  (0.0495), and after a first look at the same speakers. Say it like that: "a small effect in
+  the predicted direction, carried by /e/, consistent across versions; the planned v3.0 test
+  was not significant". The new-clips-only result (*p* = 0.003) is the strongest piece,
+  because those clips were never measured before, but the speakers are the same.

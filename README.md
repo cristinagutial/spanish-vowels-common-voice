@@ -35,6 +35,11 @@ is in `archive_ssp/`.
   (*d* = −0.06), and the interaction is +596 Hz. The three varieties line up Norte < México < Sur.
 - The analysis was run three times on the same day because of two measurement problems, both
   documented in PLAN_v3.md §4.5 and RESULTS.md §6.
+- **v3.1** (40 clips per speaker instead of 8, same speakers): H1 8/10 equivalent; H2
+  *d* = +0.23, *p* = 0.0495, and *d* = +0.40, *p* = 0.003 on the new clips alone; H2a the same.
+  It backs up the v3.0 estimates but is not an independent replication (RESULTS.md §9).
+- A visual check of 29 formant tracks found about 1 mismeasured token in 20, mostly /i/ F2
+  (RESULTS.md §5); the hand measurement in Praat is still to do.
 
 ## Setup
 
