@@ -125,6 +125,22 @@ def main():
     dur = summary[summary["measure"] == "duration_shift"].pivot(index="dialecto", columns="vowel", values="mean")
     log.info("Duration (ms):\n  " + (dur * 1000).round(1).to_string().replace("\n", "\n  "))
 
+    # v3.1: el mismo test solo con los clips que el v3.0 nunca midio (rango > 8)
+    ranks = pd.read_csv(config.SAMPLE_CSV, usecols=["path", "speaker_clip_rank"])
+    ranks["clip"] = ranks["path"].str.replace(".mp3", "", regex=False)
+    new = tokens.merge(ranks[["clip", "speaker_clip_rank"]], on="clip")
+    new = new[new["speaker_clip_rank"] > config.MAX_CLIPS_PER_SPEAKER]
+    new_result = pd.DataFrame()
+    if len(new):
+        banner(log, f"NEW CLIPS ONLY - primary test on clips ranked > {config.MAX_CLIPS_PER_SPEAKER}")
+        fresh = primary_measure(speaker_shifts(new))
+        new_result = pd.DataFrame([dict(test="F1 shift /e o/, new clips only",
+                                        **compare(fresh[fresh["dialecto"] == "sur"]["F1_shift"],
+                                                  fresh[fresh["dialecto"] == "norte"]["F1_shift"], ("sur", "norte")))])
+        f = new_result.iloc[0]
+        log.info(f"  Sur {f['mean_sur']:+.3f} (n={f['n_sur']})  Norte {f['mean_norte']:+.3f} (n={f['n_norte']})  "
+                 f"d = {f['d']:+.2f}  95% CI [{f['ci95_lo']:+.2f}, {f['ci95_hi']:+.2f}]  p = {f['p']:.4f}")
+
     banner(log, "SENSITIVITY - primary test with the sex-based ceiling of v2.0")
     alt = primary_measure(speaker_shifts(h2_tokens(pd.read_csv(config.TOKENS_SEXCEIL_CSV))))
     alt_result = pd.DataFrame([dict(test="F1 shift /e o/, sex-based ceiling",
@@ -136,6 +152,8 @@ def main():
 
     banner(log, "WRITING OUTPUTS")
     save_table(alt_result, "s7_h2_primary_sexceil", log)
+    if len(new_result):
+        save_table(new_result, "s7_h2_primary_newclips", log)
     save_table(tokens.groupby(["dialecto", "vowel", "type"]).size().reset_index(name="n_tokens"),
                "s7_h2_token_counts", log)
     save_table(shifts, "s7_h2_shifts", log)

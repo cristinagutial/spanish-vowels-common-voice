@@ -75,6 +75,29 @@ The usual run reuses the sample and the alignment:
 Stage 4 is the slow one (about 10 minutes); the rest take seconds. Every stage saves its output
 in `output/`, so the later ones can be re-run on their own.
 
+### v3.1: 40 clips per speaker
+
+v3.1 reruns the whole pipeline with up to 40 clips per speaker instead of 8, in its own
+folder so v3.0 is not touched (design in PLAN_v3.md §4.7). The extra mp3s come from the
+corpus tarball with the list in `output_v31/data/extract_list.txt`.
+
+```bash
+SPEECH_OUTPUT=output_v31 ./speech/bin/python -m src.s1_sample --all-corpus --cap 40
+```
+
+```bash
+SPEECH_OUTPUT=output_v31 ./speech/bin/python run_all.py --from 2
+```
+
+### Formant track check
+
+Draws a sample of 29 vowels with their Burg tracks, for checking by eye and by hand in Praat
+(`output/track_check/`; open `open_in_praat.praat` in Praat to step through them).
+
+```bash
+./speech/bin/python -m src.check_tracks
+```
+
 ## Tests
 
 ```bash

@@ -55,7 +55,8 @@ CORE_DIALECTS = ["norte", "sur"]
 OUTGROUP_DIALECTS = ["mexico"]
 ALL_DIALECTS = CORE_DIALECTS + OUTGROUP_DIALECTS
 
-# tope de clips por hablante, para que nadie domine una celda
+# tope de clips por hablante del v3.0, para que nadie domine una celda. El v3.1
+# usa 40 (s1_sample --cap 40); los clips con rango > 8 son los que el v3.0 no midio
 MAX_CLIPS_PER_SPEAKER = 8
 
 MIN_CLIPS_PER_SPEAKER = 1
