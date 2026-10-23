@@ -1,0 +1,300 @@
+Running 6 stage(s): [4, 5, 6, 7, 8, 9]
+
+##########################################################################
+# STAGE 4: Per-vowel formants, ceiling per speaker
+##########################################################################
+
+
+==========================================================================
+STAGE 4 - PER-VOWEL FORMANTS, CEILING PER SPEAKER
+==========================================================================
+5572 aligned clips
+956 speakers, 26 ceilings from 4000 to 6500 Hz
+
+Extracted 100,053 vowel tokens from 5570 clips
+
+Ceiling source: stressed 757, all 141, sex 58
+Median ceiling by declared sex (Hz):
+  sex
+  female     5800.0
+  male       4900.0
+  unknown    5250.0
+Median ceiling by dialect (Hz):
+  dialecto
+  mexico    5200.0
+  norte     5100.0
+  sur       5000.0
+
+Stress resolved for 96.7% of tokens; 30,124 stressed
+Vowels before a word-final /s/: 8,282
+
+  -> output/data/vowel_tokens_raw.csv
+  -> output/tables/s4_ceilings.csv
+
+[stage 4 finished in 632.9s]
+
+##########################################################################
+# STAGE 5: Quality control and normalisation
+##########################################################################
+
+
+==========================================================================
+STAGE 5 - QUALITY CONTROL AND NORMALISATION
+==========================================================================
+100,053 raw vowel tokens
+
+==========================================================================
+QC FUNNEL
+==========================================================================
+  extracted                          100,053  (100.0%)
+  measurable at midpoint             100,052  (100.0%)
+  F1/F2 in range                      99,164  (99.1%)
+  F2 > F1                             99,164  (99.1%)
+  within-speaker outliers removed     97,647  (97.6%)
+
+==========================================================================
+NORMALISATION
+==========================================================================
+  speakers with tokens                956
+  speakers all 5 vowels               805
+  speakers plausible vowel space      739
+  dropped for an implausible vowel space: {'norte': 30, 'mexico': 30, 'sur': 6}
+            tokens  speakers
+  dialecto                  
+  mexico     26424       223
+  norte      41426       361
+  sur        19559       155
+
+  -> output/data/vowel_tokens.csv
+  -> output/tables/s5_qc_funnel.csv
+  -> output/tables/s5_speaker_coverage.csv
+
+Sex-based ceiling (sensitivity): 741 usable speakers
+  -> output/data/vowel_tokens_sexceil.csv
+
+[stage 5 finished in 5.4s]
+
+##########################################################################
+# STAGE 6: H1: stressed vowel space
+##########################################################################
+
+
+==========================================================================
+STAGE 6 - H1: STRESSED VOWEL SPACE
+==========================================================================
+21,985 stressed content-word tokens -> 3,195 speaker x vowel cells
+Speakers: mexico 223, norte 359, sur 155
+
+==========================================================================
+NORTE vs SUR - EQUIVALENCE (bound d = +/-0.30)
+==========================================================================
+  F1 /a/   d = -0.15  90% CI [-0.31, +0.02]  p_holm = 0.977  p_tost = 0.073  not shown
+  F1 /e/   d = -0.02  90% CI [-0.18, +0.14]  p_holm = 1.000  p_tost = 0.002  equivalent
+  F1 /i/   d = +0.09  90% CI [-0.07, +0.26]  p_holm = 1.000  p_tost = 0.018  equivalent
+  F1 /o/   d = -0.08  90% CI [-0.24, +0.09]  p_holm = 1.000  p_tost = 0.014  equivalent
+  F1 /u/   d = -0.14  90% CI [-0.36, +0.08]  p_holm = 1.000  p_tost = 0.121  not shown
+  F2 /a/   d = +0.27  90% CI [+0.12, +0.42]  p_holm = 0.035  p_tost = 0.370  not shown
+  F2 /e/   d = -0.20  90% CI [-0.35, -0.05]  p_holm = 0.275  p_tost = 0.134  not shown
+  F2 /i/   d = -0.19  90% CI [-0.32, -0.05]  p_holm = 0.270  p_tost = 0.097  not shown
+  F2 /o/   d = -0.14  90% CI [-0.29, +0.02]  p_holm = 0.977  p_tost = 0.044  equivalent
+  F2 /u/   d = -0.02  90% CI [-0.23, +0.18]  p_holm = 1.000  p_tost = 0.012  equivalent
+
+  5 of 10 measures inside the bound; 1 differ at p_holm < 0.05
+
+==========================================================================
+MEXICO AS POSITIVE CONTROL
+==========================================================================
+  norte vs mexico  mean |d| = 0.164  max |d| = 0.275  significant 1/10
+  sur vs mexico    mean |d| = 0.146  max |d| = 0.502  significant 2/10
+  norte vs sur     mean |d| = 0.129  max |d| = 0.270  significant 1/10
+
+==========================================================================
+VOWEL SPACE AREA (descriptive)
+==========================================================================
+            mean  size
+  dialecto            
+  mexico    3.85   113
+  norte     3.64   181
+  sur       3.70    90
+
+  80% power for d >= 0.28 (median n: 318.0 Norte, 145.0 Sur)
+
+  90% power for d >= 0.33 (median n: 318.0 Norte, 145.0 Sur)
+
+==========================================================================
+SENSITIVITY - same test with the sex-based ceiling of v2.0
+==========================================================================
+  F1 /a/   d = -0.20  90% CI [-0.36, -0.04]  p_holm = 0.563  p_tost = 0.166  not shown
+  F1 /e/   d = -0.04  90% CI [-0.20, +0.11]  p_holm = 1.000  p_tost = 0.003  equivalent
+  F1 /i/   d = +0.09  90% CI [-0.08, +0.27]  p_holm = 1.000  p_tost = 0.024  equivalent
+  F1 /o/   d = -0.04  90% CI [-0.20, +0.13]  p_holm = 1.000  p_tost = 0.005  equivalent
+  F1 /u/   d = +0.03  90% CI [-0.17, +0.23]  p_holm = 1.000  p_tost = 0.013  equivalent
+  F2 /a/   d = +0.17  90% CI [+0.02, +0.33]  p_holm = 0.563  p_tost = 0.086  not shown
+  F2 /e/   d = -0.25  90% CI [-0.40, -0.10]  p_holm = 0.069  p_tost = 0.298  not shown
+  F2 /i/   d = +0.04  90% CI [-0.13, +0.21]  p_holm = 1.000  p_tost = 0.006  equivalent
+  F2 /o/   d = -0.12  90% CI [-0.27, +0.03]  p_holm = 1.000  p_tost = 0.025  equivalent
+  F2 /u/   d = -0.03  90% CI [-0.23, +0.18]  p_holm = 1.000  p_tost = 0.017  equivalent
+
+  7 of 10 measures inside the bound; 0 differ at p_holm < 0.05
+
+==========================================================================
+WRITING OUTPUTS
+==========================================================================
+  -> output/tables/s6_h1_norte_sur_sexceil.csv
+  -> output/tables/s6_h1_cells.csv
+  -> output/tables/s6_h1_norte_sur.csv
+  -> output/tables/s6_h1_control.csv
+  -> output/tables/s6_vowel_space_area.csv
+  -> output/tables/s6_vowel_space_area_tests.csv
+  -> output/tables/s6_power.csv
+
+[stage 6 finished in 0.9s]
+
+##########################################################################
+# STAGE 7: H2: vowels before word-final /s/
+##########################################################################
+
+
+==========================================================================
+STAGE 7 - H2: VOWELS BEFORE WORD-FINAL /s/
+==========================================================================
+Tokens by variety and type:
+  type      plural  singular
+  dialecto                  
+  mexico      1054      2445
+  norte       1627      4138
+  sur          692      1982
+
+Speakers with both types, by vowel:
+  vowel       a    e    o
+  dialecto               
+  mexico     72   68   97
+  norte     107  103  163
+  sur        48   55   63
+
+==========================================================================
+PRIMARY TEST - F1 shift on /e o/, Sur vs Norte
+==========================================================================
+  Sur +0.093 (n=92)  Norte -0.070 (n=206)
+  d = +0.25  95% CI [-0.00, +0.50]  p = 0.0524
+
+==========================================================================
+SECONDARY TESTS (Holm)
+==========================================================================
+  F1 shift /a/, sur vs norte       d = +0.38  p_holm = 0.203  (n 48 vs 107)
+  F1 shift /e/, sur vs norte       d = +0.28  p_holm = 0.407  (n 55 vs 103)
+  F1 shift /o/, sur vs norte       d = +0.17  p_holm = 0.538  (n 63 vs 163)
+  F2 shift /a/, sur vs norte       d = -0.29  p_holm = 0.407  (n 48 vs 107)
+  F1 shift /e o/, mexico vs norte  d = -0.11  p_holm = 0.538  (n 127 vs 206)
+  F1 shift /e o/, mexico vs sur    d = -0.36  p_holm = 0.060  (n 127 vs 92)
+
+==========================================================================
+DESCRIPTIVE - mean shift (plural - singular)
+==========================================================================
+F1 (Lobanov z):
+  vowel         a      e      o
+  dialecto                     
+  mexico   -0.132 -0.201 -0.109
+  norte    -0.302 -0.024 -0.088
+  sur       0.010  0.136  0.025
+Duration (ms):
+  vowel        a     e     o
+  dialecto                  
+  mexico   -27.3 -29.6 -29.0
+  norte    -26.2 -24.9 -34.0
+  sur      -22.7 -16.5 -23.5
+
+==========================================================================
+SENSITIVITY - primary test with the sex-based ceiling of v2.0
+==========================================================================
+  Sur +0.109 (n=92)  Norte -0.035 (n=205)  d = +0.23  95% CI [-0.03, +0.49]  p = 0.0836
+
+==========================================================================
+WRITING OUTPUTS
+==========================================================================
+  -> output/tables/s7_h2_primary_sexceil.csv
+  -> output/tables/s7_h2_token_counts.csv
+  -> output/tables/s7_h2_shifts.csv
+  -> output/tables/s7_h2_primary.csv
+  -> output/tables/s7_h2_secondary.csv
+  -> output/tables/s7_h2_descriptive.csv
+
+[stage 7 finished in 0.6s]
+
+##########################################################################
+# STAGE 8: H2a: coda /s/ check
+##########################################################################
+
+
+==========================================================================
+STAGE 8 - H2a: CODA /s/ CHECK
+==========================================================================
+Measuring /s/ in 5572 clips...
+21,494 /s/ tokens
+  position  coda  onset  prevocalic_final
+  dialecto                               
+  mexico    3330   3215               508
+  norte     4949   4179               810
+  sur       2200   1976               327
+
+CoG percentiles by position (Hz):
+                      0.05    0.50    0.95
+  position                                
+  coda              2036.0  4999.0  7905.0
+  onset             3047.0  5231.0  8013.0
+  prevocalic_final  2435.0  5044.0  7726.0
+
+1690 speaker x position cells from 880 speakers
+
+==========================================================================
+NORTE vs SUR BY POSITION
+==========================================================================
+  coda   cog  Norte 4985.034  Sur 4468.371  d = +0.46  p_holm = 0.0000
+  coda   dur  Norte    0.102  Sur    0.094  d = +0.26  p_holm = 0.0257
+  onset  cog  Norte 5073.474  Sur 5140.006  d = -0.06  p_holm = 0.4961
+  onset  dur  Norte    0.100  Sur    0.105  d = -0.27  p_holm = 0.0246
+
+  dialect x position on CoG: +595.9 Hz, p = 0.0000
+
+==========================================================================
+WEAKENING INDEX (onset CoG - coda CoG, per speaker)
+==========================================================================
+  norte      +100 Hz  (n = 367)
+  sur        +691 Hz  (n = 164)
+  mexico     +374 Hz  (n = 245)
+  Sur vs Norte: d = +0.85, p = 4.83e-13
+
+==========================================================================
+WRITING OUTPUTS
+==========================================================================
+  -> output/tables/s8_position_counts.csv
+  -> output/tables/s8_sibilant_cells.csv
+  -> output/tables/s8_sibilant_norte_sur.csv
+  -> output/tables/s8_interaction.csv
+  -> output/tables/s8_weakening_index.csv
+  -> output/tables/s8_weakening_per_speaker.csv
+
+[stage 8 finished in 7.0s]
+
+##########################################################################
+# STAGE 9: Figures
+##########################################################################
+
+
+==========================================================================
+FIGURES
+==========================================================================
+  -> output/figures/fig_vowel_space.png
+  -> output/figures/fig_equivalence.png
+  -> output/figures/fig_plural.png
+  -> output/figures/fig_sibilants.png
+  -> output/figures/fig_ceilings.png
+  -> output/figures/fig_data_flow.png
+
+[stage 9 finished in 1.6s]
+
+##########################################################################
+# All stages completed in 648.4s
+# Tables  -> output/tables/
+# Figures -> output/figures/
+##########################################################################

@@ -1,0 +1,4 @@
+pair,best_model,speaker_folds,random_folds,n_speakers
+norte vs sur,LDA,0.5,0.5,624
+norte vs mexico,Random forest,0.5274666894807257,0.5325756775511954,725
+sur vs mexico,Random forest,0.5301834548842137,0.5393389686615621,463

@@ -1,0 +1,40 @@
+Running 1 stage(s): [4]
+
+##########################################################################
+# STAGE 4: Per-vowel formant extraction
+##########################################################################
+
+
+==========================================================================
+STAGE 4 - PER-VOWEL FORMANTS, CEILING PER SPEAKER
+==========================================================================
+5572 aligned clips
+956 speakers, 26 ceilings from 4000 to 6500 Hz
+
+Extracted 100,053 vowel tokens from 5570 clips
+
+Ceiling source: stressed 757, all 141, sex 58
+Median ceiling by declared sex (Hz):
+  sex
+  female     5800.0
+  male       4900.0
+  unknown    5250.0
+Median ceiling by dialect (Hz):
+  dialecto
+  mexico    5200.0
+  norte     5100.0
+  sur       5000.0
+
+Stress resolved for 96.7% of tokens; 30,124 stressed
+Vowels before a word-final /s/: 8,282
+
+  -> output/data/vowel_tokens_raw.csv
+  -> output/tables/s4_ceilings.csv
+
+[stage 4 finished in 638.3s]
+
+##########################################################################
+# All stages completed in 638.3s
+# Tables  -> output/tables/
+# Figures -> output/figures/
+##########################################################################

@@ -1,0 +1,27 @@
+# entorno y cosas del sistema
+speech/
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+
+# corpus: demasiado grande, y se vuelve a sacar del tar de Common Voice 26.0
+audios_corpus/
+validated.tsv
+clip_durations.tsv
+
+# salidas pesadas que el pipeline regenera; el manifest si va, porque define la muestra
+output*/work/
+output*/data/*
+!output*/data/sample_manifest.csv
+output*/extract.log
+
+# material del curso, no es mio
+Experimental Phonetics/
+
+# del archivo solo van codigo, documentos y tablas, nada de datos ni zips
+archive_ssp/corpus_v25/
+archive_ssp/midterm/audios_filtrados/
+archive_ssp/v2_output/data/
+archive_ssp/**/*.zip
+archive_ssp/ssp_submission/Speech_Project_Cristina_Gutierrez/

@@ -1,0 +1,6 @@
+stage,n_tokens,pct_retained
+extracted,100053,100.0
+measurable at midpoint,100052,99.99900052971925
+F1/F2 in range,99164,99.11147092041219
+F2 > F1,99164,99.11147092041219
+within-speaker outliers removed,97647,97.5952745045126

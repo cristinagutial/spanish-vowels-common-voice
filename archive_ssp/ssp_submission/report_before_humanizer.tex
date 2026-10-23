@@ -1,0 +1,1022 @@
+% =============================================================================
+% From Speakers to Dialects
+% Cristina Gutierrez Alcala - Speech Signal Processing, 2026
+%
+% ACL style. Change the \usepackage line below to match the style file you
+% already have in Overleaf (acl.sty, ACL2023.sty, emnlp2023.sty, ...).
+% Upload the seven PNGs from output/figures/ into the Overleaf project root.
+% =============================================================================
+
+\documentclass[11pt]{article}
+
+\usepackage[]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{amsmath}
+\usepackage{inconsolata}
+
+\title{From Speakers to Dialects:\\An Acoustic Study of Northern and Southern
+Peninsular Spanish Using Common Voice}
+
+\author{Cristina Guti\'errez Alcal\'a \\
+  Speech Signal Processing \\
+  2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This study compares Northern and Southern Peninsular Spanish acoustically using
+dialectally labeled recordings from Mozilla Common Voice, with forced alignment
+for phonemic measurement and statistical inference at the speaker level. Across
+957 speakers and 89,958 vowel tokens, no difference was detected between the two
+varieties in the vowel space: no value exceeded $|d| = 0.17$ in a design powered
+for $d \geq 0.24$. The fact that the result is attributable to the dialects and
+not to the method is corroborated by an external Mexican group, which does show a
+clear separation from both Peninsular varieties with effects 2.5 times greater.
+The variation is localized in the consonant: Southern speech weakens /s/ in coda
+($d = +0.63$), with /s/ at the onset serving as the null control. The study also
+documents how an earlier version of this same analysis yielded effects exceeding
+one standard deviation that turned out to stem from two individual speakers, and
+what is required of a volunteer corpus to avoid reproducing that error.
+\end{abstract}
+
+% =============================================================================
+\section{Introduction}
+
+The fact that a speaker from Bilbao and one from Seville sound different is an
+intuition shared by all Spanish speakers and one that dialectology has described
+for over a century. Translating that intuition into a reproducible acoustic
+measure is a problem that remains largely unresolved, and it is the one addressed
+in this paper.
+
+The first two formants of a vowel, F1 and F2, are the resonance frequencies of
+the vocal tract that directly encode its height and frontness, and these
+constitute the standard representation of a variety's vowel space. The initial
+question was whether the vowel space of Northern peninsular Spanish differs
+measurably from that of Southern peninsular Spanish, and whether that difference
+is sufficient to classify an unknown speaker. Mozilla Common Voice provided an
+unusual resource for answering these questions: thousands of recordings with
+dialect labels declared by the speakers themselves, openly available and on a
+scale that laboratory phonetics rarely achieves.
+
+An initial version of the analysis answered ``yes'', and emphatically so:
+differences exceeding one and a half standard deviations in F1 and in the
+bandwidth of F2, with $p$-values below 0.001. A subsequent audit showed that
+those effects stemmed from two specific speakers, who together accounted for
+54\% and 80\% of their respective dialect cells. The study did not compare two
+varieties; it compared two people.
+
+This report presents an analysis reconstructed from that finding incorporating it
+as the subject of study rather than as an error to be concealed. The study
+establishes four findings. First, it documents the mechanism by which clip-based
+sampling generated large, spurious effects, and shows that the magnitude obtained
+is a direct function of the extent to which an individual is allowed to dominate
+the sample (Section~\ref{sec:pseudo}). Second, using a balanced design with 957
+speakers, it finds no difference whatsoever between the two peninsular varieties
+in the vowel space, in a contrast with sufficient power to rule out anything
+other than a small effect (Section~\ref{sec:vowelspace}). Third, it verifies that
+this absence is not due to the coarseness of the method by incorporating Mexican
+Spanish as an outgroup, which does separate from both varieties using the same
+procedure (Section~\ref{sec:outgroup}). And fourth, it finds a substantial effect
+in the consonant system: the weakening of /s/ in coda in Southern speech
+(Section~\ref{sec:coda}).
+
+The common thread linking the four is a matter of design rather than statistics,
+and is stated in Section~\ref{sec:discussion}: in a corpus built from unequal
+contributions by volunteers, the contrasts identified within individual speakers
+are robust, while the overall comparisons between groups are fragile.
+
+% =============================================================================
+\section{State of the art}
+
+\subsection{Dialectal variations in Peninsular Spanish}
+\label{sec:dialectal}
+
+Spanish has a remarkably stable system of five vowels: /a, e, i, o, u/. It lacks
+distinctions based on vowel length and tension; its unstressed vowels are not
+reduced as they are in English or Portuguese; and its inventory has hardly
+changed since the Romance language system became fixed. This stability has a
+direct implication for this study: the vowel system offers little scope for
+dialectal differentiation, and variation in Spanish is overwhelmingly consonantal
+\citep{hualde2005,martinez2007}. The reference formant values for peninsular
+Spanish were established by \citet{quilis1981} based on laboratory speech and
+remain the standard basis for comparison.
+
+The best-documented feature of Southern speech is the weakening of /s/ in
+implosive position, which is realized as aspiration, assimilation to the
+following segment, or elision, in contrast to the characteristic retention found
+in the peninsular North
+\citep{alvar1996,narbona1998,gerfen2002,ruch2014}. Associated with this
+weakening, a classic descriptive account holds that the preceding vowel
+compensates for the loss by opening and lengthening, to the point of positing an
+expanded vowel system based on degree of openness for Eastern Andalusian
+\citep{alonso1950}. This assertion, based on auditory observation and small
+samples, can be tested directly with current methods, and
+Section~\ref{sec:precoda} does so.
+
+\subsection{Formant Normalization}
+\label{sec:norm}
+
+Formant frequencies depend on the length of the vocal tract as much as on
+articulatory configuration, so that two speakers producing the same vowel will
+systematically differ in hertz if they differ in anatomy. Comparing varieties in
+raw hertz values, when the data sets are not balanced by sex, is to confuse
+dialect with physiology. Sociophonetics solves this problem by normalizing data
+per speaker, and among the available procedures, the intra-speaker z-score
+proposed by \citet{lobanov1971} performs best in systematic comparisons: it
+eliminates anatomical variation while preserving sociolinguistic differences
+\citep{adank2004}. The Bark scale \citep{traunmuller1990}, which is perceptually
+based, is used here as a complementary measure.
+
+\subsection{Common Voice as a phonetic corpus}
+\label{sec:corpus}
+
+Common Voice is a multilingual corpus of read speech built from contributions by
+volunteers and distributed openly \citep{ardila2020}. For dialectology, it offers
+something rare: variety labels declared by the speakers themselves, on a scale of
+thousands of speakers. It also presents two challenges. The first is that these
+labels are neither verifiable nor granular. The second, more significant
+challenge is that the distribution of contributions is extraordinarily uneven,
+because nothing in the project's design encourages equitable distributions: a few
+enthusiastic volunteers can each contribute hundreds of recordings. Sampling that
+selects clips without grouping them by speaker therefore produces observations
+that are not independent, with the consequent risk of pseudoreplication
+\citep{hurlbert1984,winter2019}. The availability of high-quality forced aligners
+for Spanish \citep{mcauliffe2017} is what allows us to move from clip-level
+measures to phoneme-level measures, and thereby to examine the intra-speaker
+contrasts that the corpus does indeed robustly support.
+
+% =============================================================================
+\section{Corpus and sampling}
+
+\subsection{Common Voice 26.0 and dialect tags}
+
+All the data used come from Mozilla Common Voice, Spanish 26.0 version (12 of
+June of 2026), a corpus of read speech built from voluntary submissions and
+distributed under an open licence \citep{ardila2020}. The version used contains
+439,225 validated clips. Each clip has an orthographic transcription associated
+with it and a speaker identification number (\texttt{client\_id}), in addition to
+autodeclared metadata such as gender, age and accent.
+
+Getting the corpus onto a machine where I could work with it shaped the pipeline
+more than I expected. The Spanish release is a single archive of roughly 48 GB.
+My first attempt was to download it, unpack it and work from the audio. That cost
+two days of failed transfers and still left me without room for the extracted
+files. The fix turned into the design. Nothing in the sampling stage needs the
+audio, because the selection is made entirely from \texttt{validated.tsv}, which
+sits at the front of the archive and can be pulled out with
+\texttt{tar -{}-fast-read} in about a second. Only the clips the sampler selects
+are then extracted, which in the final study meant unpacking 5,577 files instead
+of 439,225.
+
+The accent tag is what makes this corpus usable in a dialectal study, since the
+speakers are responsible for tagging the dialectal variation that they consider
+they speak. From the available Spanish tags, I selected three: ``peninsular
+septentrional'' also referred to as North, ``peninsular meridional'' or South and
+Mexican. The latter being incorporated as an external group due to the reasons
+explained in Section~\ref{sec:outgroup}. The speakers are also able to mark one
+or more accents, and a non-negligible proportion do. I decided to discard those
+clips instead of manually assigning one of the tags, since any tie-breaker
+criterion would introduce a biased opinion in the grouping variable. After the
+filter was applied, I had 236,832 clips with exactly one of the aforementioned
+tags.
+
+The nature of these tags must also be mentioned. They are autodeclarations and
+not dialectological classifications. There is no independent verification of the
+provenance of the speaker, or further fine-grained information than the region.
+This limitation will be touched on in Section~\ref{sec:limitations}.
+
+\subsection{Speaker-level sampling and per-speaker cap}
+
+The most important design choice of this project was also the simplest: the
+sampling was done directly on the speaker and not on the clip. An older version
+of this analysis selected clips randomly, identifying them by file path, without
+looking at who had produced each clip. The result was a sample dominated by a
+handful of individuals. Section~\ref{sec:pseudo} is devoted entirely to the
+consequences.
+
+The current sampling groups first by \texttt{client\_id}, arranges the clips of
+each speaker by a reproducible criterion and applies a cap of eight clips per
+speaker. The declared design objective is to first maximize the number of
+speakers and then the number of clips per speaker, because that same number of
+speakers (and not number of tokens) is what narrows down inference. The whole
+sampling stage is seeded, and is registered in a versioned manifest, so that the
+sample is reconstructible clip by clip.
+
+The cap of eight is a compromise between two requirements that pull in opposite
+directions. Lobanov normalization needs enough vowels from each speaker to
+estimate that speaker's own mean and spread, which argues for more clips per
+person. Independence argues for fewer. Eight clips of roughly five seconds yield
+on the order of a hundred vowel tokens per speaker, comfortably enough for the
+normalization, while holding any single individual's share of a dialect cell
+below one percent. The sampling is implemented with pandas \citep{mckinney2010}
+over NumPy arrays \citep{harris2020}.
+
+One consequence of prioritizing speakers is that the design is bounded by its
+smallest group. Southern Peninsular Spanish has 188 speakers in release 26.0, and
+that number constrains everything the study can claim, so Northern and Southern
+speakers were both taken in full. Mexican Spanish has over 1,500 available, far
+more than the comparison needs, and was capped at 300.
+
+The effect of the cap is measured with the Gini coefficient of the distribution
+of clips per speaker, where 0 indicates a perfectly even distribution and 1 a
+total concentration. In the preliminary sample the Gini coefficient was 0.76 in
+North and 0.85 in South. In the current sample it is 0.26 in North and 0.18 in
+South. This sole change is what made the rest of the analysis interpretable.
+
+\subsection{Final design of the sample}
+\label{sec:sample}
+
+The resulting sample has 5,577 clips of 957 different speakers, and a total of
+484.5 recorded minutes. Table~\ref{tab:sample} compiles its composition.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrr}
+\toprule
+Variety & Clips & Speakers & \makecell{With\\tokens} & \makecell{Norma-\\lizable} & Tokens \\
+\midrule
+North  & 2,639 & 469 & 468 & 443 & 42,805 \\
+South  & 1,199 & 188 & 188 & 181 & 19,549 \\
+Mexico & 1,739 & 300 & 299 & 282 & 27,604 \\
+\midrule
+Total  & 5,577 & 957 & 955 & 906 & 89,958 \\
+\bottomrule
+\end{tabular}
+\caption{Composition of the sample in each variety.}
+\label{tab:sample}
+\end{table}
+
+The imbalance between varieties is dictated by the corpus itself. The Southern
+part of the peninsula is represented by fewer than half as many speakers as the
+North. I do not correct for this by undersampling the North, because discarding
+valid data solely to balance the cells would reduce statistical power without
+gaining anything. The comparisons are calculated using tests that do not assume
+equal sample sizes.
+
+The imbalance by sex, however, does matter. All three varieties are dominated by
+male voices: 27.9\% of female speakers in the North, 20.4\% in the South, and
+25.2\% in Mexico, with the rest being male or undeclared. Since the length of the
+vocal tract directly influences formant frequencies, a comparison between these
+groups in raw hertz does not distinguish dialect from anatomy. This is why the
+normalization described in Section~\ref{sec:qc} is not an optional refinement but
+a design requirement.
+
+Figure~\ref{fig:dataflow} summarizes the complete path, from the 439,225
+validated clips in the corpus to the tokens finally analyzed. The alignment and
+quality-control stages that produce those numbers are described in
+Sections~\ref{sec:align} and~\ref{sec:qc}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_data_flow.png}
+\caption{From corpus to analyzed tokens. The left panel shows the reduction from
+the validated Common Voice clips to the final sample after filtering by unique
+label and applying the limit of eight clips per speaker. The right panel shows
+the quality control funnel applied to the extracted vowel tokens.}
+\label{fig:dataflow}
+\end{figure*}
+
+The sample of 903 clips on which the preliminary analysis was based remains
+unchanged and is reused in Section~\ref{sec:pseudo}, where it serves not as a
+data source but as an object of study.
+
+% =============================================================================
+\section{Methodology}
+
+\subsection{Audio preprocessing and forced alignment}
+\label{sec:align}
+
+Each clip was converted from MP3 to mono WAV at 16 kHz, which is the sample
+frequency expected by the aligner, with peak scaling to avoid clipping. Next to
+each audio file, a text transcription file was written from what the speaker read
+aloud, taken directly from the corpus metadata, and the ensemble was organized in
+per speaker directories so that the aligner could apply its speaker adaptation.
+
+Forced alignment was not part of the original plan. It became necessary after two
+attempts to recover vowel identity by cheaper means, and both failures explain
+why the pipeline looks the way it does. The first classified each measurement by
+its position in the F1/F2 plane, using the reference ranges for Spanish vowels in
+\citet{quilis1981}. Nearly every token it labelled /a/ came from the Northern
+group and nearly every /i/ from the Southern one. Those ranges are calibrated on
+Northern speech, so a displaced Southern token lands in a neighbouring category.
+The procedure is also circular: labelling vowels by their formants and
+then comparing formants across dialects builds the conclusion into the labels.
+The second attempt inferred the vowel from the transcription, which works only
+for clips containing a single vowel type. Of 903 clips, 14 resolved.
+
+That left aligning the audio to its transcription properly. I installed the
+Montreal Forced Aligner \citep{mcauliffe2017}, built on Kaldi \citep{povey2011},
+together with the pretrained \texttt{spanish\_mfa} acoustic model and dictionary.
+The aligner takes the audio and its orthographic transcription and returns a
+TextGrid with the time boundaries of each word and each phone. Of the 5,577
+clips, 5,572 aligned correctly (99.9\%); the remaining five failed because of
+discrepancies between the transcription and the signal.
+
+With alignment, each clip yields all of its vowel nuclei with phonemic labels,
+and with them four pieces of information that were unavailable before: vowel
+identity, duration, stress position, and the following segment. The last of these
+is what made the coda /s/ analysis of Section~\ref{sec:coda} possible. The
+semivowels /j/ and /w/ are deliberately excluded, since they are not syllable
+nuclei and their formant targets are transitional.
+
+\subsection{Extraction of acoustic parameters}
+
+The acoustic measures were taken using Praat \citep{boersma2021} through its
+Python interface Parselmouth \citep{jadoul2018}, using linear predictive analysis
+with Burg's method with a maximum of five formants.
+
+The frequency ceiling is adapted to the speaker's declared sex: 5,000 Hz for male
+voices, 5,500 Hz for female voices, and 5,250 Hz when the corpus records no
+value. The previous analysis applied a singular ceiling of 5,000 Hz to all of the
+speakers, which systematically biased the estimation of female formants. This was
+not a trivial problem, since the dialect cells are not balanced by sex.
+
+From each vowel, F1, F2, B1 and B2 were registered in three different points:
+25\%, 50\%, and 75\% of its duration. The middle point is the conventional
+measure; the other two allow to quantify the formant movement inside a vowel,
+relevant to descriptions of diphthongization in Southern speech. To them, I added
+segment duration, fundamental frequency, the harmonics-to-noise ratio (HNR), the
+clip's signal-to-noise ratio, lexical stress and the following consonantal
+context. The vowels with a duration less than 30 ms were discarded from the
+start, since they were already dominated by the transitions towards the adjacent
+consonants and lacked a measurable stationary state. The extraction was
+parallelized on various processes.
+
+\subsection{Quality control and normalization}
+\label{sec:qc}
+
+Quality control first applies deliberately generous range filters: F1 between 150
+and 1,100 Hz, F2 between 500 and 3,200 Hz, and bandwidth between 10 and 900 Hz
+(B1) and 10 and 1,000 Hz (B2). These limits exist to remove tracking failures (an
+F1 of 3 kHz is an octave error, not a vowel), not to impose a phonetic
+expectation. Tightening them further would reintroduce the circularity that
+invalidated the vowel tagging of the preliminary analysis. Also, F2 must be
+higher than F1 and outliers beyond three standard deviations within each speaker
+and each vowel were eliminated, a filter that is only possible when the identity
+of the segment is known.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Phase & Tokens & \% retained \\
+\midrule
+Extracted                        & 100,053 & 100.0 \\
+Measurable at midpoint           & 100,052 & 100.0 \\
+F1/F2 in range                   &  99,104 &  99.1 \\
+B1/B2 in range                   &  91,198 &  91.1 \\
+F2 $>$ F1                        &  91,198 &  91.1 \\
+Within-speaker outliers removed  &  89,958 &  89.9 \\
+\bottomrule
+\end{tabular}
+\caption{Quality control funnel on the extracted vowel tokens.}
+\label{tab:qc}
+\end{table}
+
+The main loss is concentrated in the bandwidth filters, which discards 8\% of
+tokens. The bandwidths estimated by linear prediction were notably unstable and
+sensitive to the recording conditions, a fact that is relevant in
+Section~\ref{sec:pseudo}, where one of the preliminary analysis effects was
+precisely an effect of B2.
+
+On the surviving tokens, three representations were calculated. The first is raw
+hertz, which is retained for transparency but does not support any comparisons
+between groups, for the reasons explained in Section~\ref{sec:sample}. The second
+is the Bark scale \citep{traunmuller1990}, which approximates the ear's frequency
+resolution. The third, and the one used in all contrasts, is Lobanov
+normalization \citep{lobanov1971}: the z-score of each formant computed within
+each speaker across all of their vowels. It is the best-performing procedure in
+systematic comparisons of normalization methods \citep{adank2004}, for the
+reasons set out in Section~\ref{sec:norm}. It requires that the speaker has
+produced all five vowel categories, a condition met by 906 of the 955 speakers
+with tokens. The remaining 49 are excluded from the normalized analyses.
+
+\subsection{Statistical scope}
+
+The principle that governs all inference is that the unit of analysis is the
+speaker. Tokens from the same speaker are not independent observations. They all
+share the same anatomy, microphone, recording environment, and reading style.
+Treating them as independent inflates the degrees of freedom and produces
+significance regardless of whether or not a dialectal effect exists, as
+demonstrated empirically in Section~\ref{sec:pseudo}.
+
+In practice, this means that the data are aggregated into speaker $\times$ vowel
+cells and, from there, into a single measure per speaker, prior to any
+comparisons. Comparisons between varieties are performed using Welch's $t$-test,
+which does not assume equal variances or sample sizes, along with Cohen's $d$
+\citep{cohen1988} and confidence intervals obtained via bootstrapping with 2,000
+resamples of speakers, not tokens. Welch's test and the bootstrap are computed
+with SciPy \citep{virtanen2020}, and the mixed models are fitted with statsmodels
+\citep{seabold2010}. Within each family of contrasts, $p$-values are corrected
+for multiple comparisons using Holm's procedure \citep{holm1979}. Mixed models
+with a random intercept per speaker are fitted to the means per speaker and
+vowel. The significance level is 0.05, and every stochastic step, like sampling,
+bootstrapping, $k$-means initialization, and cross-validation partitions, is
+seeded with a fixed seed.
+
+A methodological caveat is worth noting, because it is an easy pitfall to fall
+into. Fitting a token-level mixed model to values already normalized by Lobanov
+yields an ICC close to zero and $p$-values less than 0.001. Lobanov sets each
+speaker's mean to 0 and their standard deviation to 1, so that there is no
+remaining variance between speakers for a random intercept to account for, and
+the model reverts to treating the tokens as independent. A random intercept
+protects against speakers differing in level, not against one speaker shaping a
+within-speaker pattern. Aggregating into speaker $\times$ vowel cells before
+modeling is what solves the problem.
+
+Finally, the design is accompanied by a power analysis computed from the realized
+speaker counts, which sets limits on what the study can honestly claim. The
+resulting thresholds are reported alongside the results in
+Section~\ref{sec:vowelspace}.
+
+\subsection{Validation of the extractor}
+
+To verify that the extractor measures what it claims to measure, vowels with
+known formants are synthesized using an F1--F5 resonator bank on a 120 Hz glottal
+source, and the recovered value is compared with the actual value. Measurement is
+accurate for open vowels (the error in F1 for /a/ is +0.2\%) but degrades for
+closed vowels, with an error of +13.5\% for /i/ and +33.7\% for /u/. The cause is
+well known: in closed vowels, F1 approaches F0, so that individual harmonics
+dominate the fitted envelope, and in /u/, the F1 and F2 poles interfere with each
+other.
+
+The bias is identical in both dialects, so it cannot generate a spurious
+difference between them, but it makes /u/ the least reliable measure in the
+study, and it is treated as such in the discussion. The test is part of a battery
+of 24 automated tests that also verify the handling of coda context, the
+identification of the stressed syllable, and the normalization functions.
+
+The pipeline runs as a single seeded entry point; figures are produced with
+Matplotlib \citep{hunter2007}, and TextGrids are parsed with praatio. A full run
+takes about fifteen minutes end to end.
+
+% =============================================================================
+\section{Pseudoreplication}
+\label{sec:pseudo}
+
+\subsection{Naive analysis}
+
+The first version of this study worked on 440 tokens (244 North and 196 South),
+obtained from taking a measurement per clip in the maximum global intensity peak.
+Applying Welch $t$-test to those tokens, three out of four comparisons were
+significant, and two of them with effects of a magnitude that is rarely observed
+in dialectal phonetics. F1 had a $d = +1.34$ and B2 $d = -1.43$, both with
+$p < 0.001$. Literally interpreted, these numbers described two varieties whose
+vowels were separated by more than one and a half standard deviations.
+
+The result was, in appearance, excellent. It was also false, and the way in which
+it was false is more instructive than any effect it might have found.
+
+\subsection{Audit per speaker}
+
+The 440 tokens do not come from 440 different speakers. When the measurements are
+cross-referenced with the speaker identifiers of the corpus, the sample revealed
+54 Northern speakers and 26 Southern speakers, with an extraordinarily unequal
+distribution. A single speaker contributed 132 tokens, which was 54\% of the
+septentrional cell, and another one made up 157, 80\% of the meridional cell. The
+three most prolific speakers of each cell concentrated 64\% and 86\% of the data,
+respectively.
+
+The consequences can be directly seen by eliminating speakers one by one. If the
+dominant meridional speaker is discarded, $d$(F1) falls from 1.34 to 0.23 and
+$d$(B2) from $-1.43$ to $-0.45$. If the septentrional speaker is discarded, they
+fall to 1.04 and $-1.04$. If both are removed (289 of the 440 tokens, leaving
+151), the effects are reduced to $d = +0.01$ and $d = -0.09$, translated to
+almost nothing. The elimination of any other speaker leaves the numbers
+practically intact.
+
+What the preliminary analysis measured, thus, was not the difference between
+septentrional and meridional Spanish, but the difference between two concrete
+people. This is the problem that \citet{hurlbert1984} called pseudoreplication.
+Pseudoreplication means treating as independent replicas observations which share
+the experimental unit. The $t$-test assumes independence; 440 clips from 80
+speakers do not satisfy it, and when one of these makes up 80\% of a cell, the
+effective sample size of that cell gets closer to one than to two hundred.
+
+\subsection{Size of the effect}
+
+The dependence can be directly quantified by recalculating the original analysis
+under increasing token caps per speaker. With a cap of one token per speaker (80
+strictly independent observations) $d$(F1) is $+0.11$. With a cap of three,
+$+0.11$. With a cap of eight, $+0.30$. With a cap of twenty, $+0.54$; with a cap
+of fifty, $+0.90$; with a cap of one hundred, $+1.15$; and with no cap at all,
+$+1.34$. The relationship is monotonic, and it is replicated in B2 with the
+opposite sign.
+
+In other words: the published effect size is a direct function of how much an
+individual is allowed to dominate the sample. There is no ``true'' value that the
+cap distorts; the cap is the sole determinant of the obtained value.
+
+\subsection{Naive against corrected}
+
+Table~\ref{tab:naive} contrasts the four original comparisons with two analyses
+that respect the data structure: the aggregation of one measure per speaker and a
+mixed model with a random intercept per speaker \citep{barr2013,winter2019}.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \makecell{naive\\$d$} & \makecell{$p$\\(Holm)} &
+ \makecell{per spk\\$d$} & $p$ & \makecell{mixed\\$p$} & ICC \\
+\midrule
+F1 & $+1.335$ & $<$0.001 & $+0.040$ & 1.000 & 1.000 & 0.54 \\
+F2 & $-0.337$ & 0.001    & $+0.333$ & 0.835 & 1.000 & 0.17 \\
+B1 & $-0.166$ & 0.100    & $+0.195$ & 1.000 & 1.000 & 0.05 \\
+B2 & $-1.433$ & $<$0.001 & $-0.172$ & 1.000 & 1.000 & 0.28 \\
+\bottomrule
+\end{tabular}
+\caption{Naive analysis per token against a speaker level analysis, on 440
+tokens.}
+\label{tab:naive}
+\end{table}
+
+No effect survives. Note also that F2 not only loses its significance but also
+changes sign when moving to the speaker level, which rules out interpreting it as
+an attenuated real effect.
+
+The ICC for F1 is 0.54: more than half of the variance in F1 is explained by who
+is speaking, not by which dialect they speak. From this value, the design effect
+can be calculated, indicating that the 440 pooled tokens carry the information of
+approximately 128 independent observations. The bootstrap-constructed confidence
+intervals show the same result from another angle. When resampling tokens,
+$d$(F1) has an interval of $[+1.11, +1.60]$, which comfortably excludes zero.
+When resampling speakers, the interval is $[-0.20, +1.83]$ and includes it. For
+B2, $[-1.67, -1.22]$ versus $[-1.89, +0.19]$. All four speaker-resampled
+intervals contain zero.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{fig_pseudoreplication.png}
+\caption{Anatomy of a sampling artifact, based on the 440 tokens from the
+preliminary analysis. A: A few speakers contribute most of the data for each
+dialect. B: The effects fade as the cap on tokens per speaker prevents any single
+individual from dominating. C: Removing a single prolific speaker eliminated the
+effects. D: The confidence intervals obtained by resampling speakers all include
+zero, unlike those obtained by resampling tokens.}
+\label{fig:pseudo}
+\end{figure*}
+
+\subsection{Why the balanced result helps}
+
+When applied to the sample described in Section~\ref{sec:sample}, the same audit
+procedure finds nothing to audit. The most prolific southern speaker now accounts
+for 1\% of their cell, and their removal shifts the largest per-vowel effect by
+0.00, compared to the shift from 1.6 to 0.0 produced by the same operation in the
+previous sample. The pooled analysis and the speaker-level analysis coincide,
+simply because there is nothing left on which they might disagree.
+
+This convergence is the argument in favor of the per-speaker cap, and it is also
+the reason why the results in Section~\ref{sec:results} can be interpreted with
+confidence: not because the statistical method is more sophisticated, but because
+the sampling design no longer allows the question to answer itself.
+
+% =============================================================================
+\section{Results}
+\label{sec:results}
+
+\subsection{Vowel space on speaker level}
+\label{sec:vowelspace}
+
+The main comparison of this project was made on a per-speaker and per-measure
+average, between 456 and 461 Northern speakers and between 178 and 186 Southern
+speakers, according to how many produced the vowel at hand.
+Table~\ref{tab:speakerlevel} compiles the fifteen evaluated measures: the
+normalized positions of the five vowels in F1 and F2, the average duration, the
+bandwidths, the harmonics-to-noise ratio and the fundamental frequency.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrr}
+\toprule
+Measurement & North & South & $d$ & $p$ & \makecell{$p$\\(Holm)} \\
+\midrule
+F1 /a/       & 1.09   & 1.07   & $+0.12$ & 0.166 & 1.000 \\
+F1 /e/       & $-0.31$ & $-0.28$ & $-0.17$ & 0.043 & 0.638 \\
+F1 /i/       & $-1.22$ & $-1.21$ & $-0.03$ & 0.720 & 1.000 \\
+F1 /o/       & $-0.09$ & $-0.08$ & $-0.04$ & 0.661 & 1.000 \\
+F1 /u/       & $-0.84$ & $-0.84$ & $+0.01$ & 0.893 & 1.000 \\
+F2 /a/       & $-0.25$ & $-0.27$ & $+0.14$ & 0.085 & 1.000 \\
+F2 /e/       & 0.59   & 0.58   & $+0.02$ & 0.783 & 1.000 \\
+F2 /i/       & 1.50   & 1.52   & $-0.06$ & 0.440 & 1.000 \\
+F2 /o/       & $-0.96$ & $-0.95$ & $-0.04$ & 0.684 & 1.000 \\
+F2 /u/       & $-1.10$ & $-1.16$ & $+0.11$ & 0.135 & 1.000 \\
+Duration (s) & 0.077  & 0.077  & $-0.00$ & 0.995 & 1.000 \\
+B1 (Hz)      & 149.2  & 146.1  & $+0.05$ & 0.528 & 1.000 \\
+B2 (Hz)      & 218.0  & 216.8  & $+0.02$ & 0.822 & 1.000 \\
+HNR (dB)     & 9.97   & 9.81   & $+0.04$ & 0.616 & 1.000 \\
+F0 (Hz)      & 151.3  & 149.4  & $+0.05$ & 0.580 & 1.000 \\
+\bottomrule
+\end{tabular}
+\caption{Speaker level comparison between North and South. F1 and F2 values are
+normalized by Lobanov (intra-speaker z-scores); the bandwidths, the duration, the
+HNR and F0 are expressed using their original units. A positive value of $d$
+indicates a higher value in the North.}
+\label{tab:speakerlevel}
+\end{table}
+
+None of these comparisons reaches significance after the correction by multiple
+comparisons. The major observed effect in any point on this table is
+$|d| = 0.17$, corresponding to an F1 of /e/, whose $p$ value without correcting
+(0.043) stays at 0.638 after applying Holm on the fifteen contrast family. The
+bandwidths, where the preliminary analysis located its second strongest effect
+($d = -1.43$), now show $d = +0.02$.
+
+The same conclusion is obtained with global vowel space measurements instead of
+using individual positionings. The area of the convex hull defined by the five
+normalized vowels is 3.05 in the North and of 2.95 in the South, with $d = +0.12$
+and a confidence interval at 95\% of $[-0.05, +0.28]$, $p = 0.167$. Mixed models
+fitted to the speaker $\times$ vowel means show no significant main effect of
+dialect.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_vowel_space.png}
+\caption{Vowel space of the Northern and Southern parts of the Iberian Peninsula.
+On the left, in raw hertz; on the right, after Lobanov normalization. Each point
+represents the average for a single speaker, and the ellipses cover 95\% of the
+variation among speakers. The reduction in dispersion between the two panels
+corresponds to the anatomical variation that normalization eliminates; what
+remains is nearly a complete overlap between varieties.}
+\label{fig:vowelspace}
+\end{figure*}
+
+What makes this result informative is not the absence of significance, but the
+power of the design. With 461 Northern speakers and 186 Southern speakers, the
+comparison would detect, with 80\% probability, any effect of magnitude
+$d \geq 0.24$, and with 90\% probability, any effect of $d \geq 0.28$. The sample
+from the preliminary analysis, by contrast, could only detect effects of
+$d \geq 0.63$, that is, large effects only.
+
+The conclusion drawn from these data must be formulated with precision. It is not
+that the vowel spaces of both varieties are identical: differences below
+$d \approx 0.24$ remain entirely possible, and this study would not rule them
+out. What can be stated, however, is that there is no difference in the vowel
+space between the North and South of the Peninsula large enough to be detected by
+a design with more than six hundred speakers. Any effect that exists is, at most,
+small.
+
+The obvious objection remains: that the method is simply incapable of
+distinguishing dialects. The following section addresses this objection.
+
+\subsection{Calibration with an external group}
+\label{sec:outgroup}
+
+The result in Section~\ref{sec:vowelspace} allows for two incompatible
+interpretations. One is that the two peninsular varieties do not differ
+appreciably in their vowel systems. The other is that the procedure is too crude
+to detect any dialectal differences, and would have produced a null result
+regardless of the comparison made. Without additional evidence, both explanations
+account for the data equally well.
+
+The way to distinguish between them is to apply exactly the same procedure to a
+contrast whose existence is not in dispute. To that end, 300 Mexican speakers
+were included in the design and processed using the same sampling, the same
+alignment, the same feature extraction, the same normalization, and the same
+statistical tests. If the instrument distinguishes between Peninsular and Mexican
+Spanish but not between Northern and Southern Spanish, the absence of an effect
+in Section~\ref{sec:vowelspace} is a statement about the dialects, not about the
+method.
+
+The three pairwise contrasts, based on the twelve vowel measures evaluated at the
+speaker level, show the following results. North versus South gives an average
+$|d|$ of 0.064 and a maximum of 0.172, with 0 of the 12 comparisons significant.
+North versus Mexico gives 0.152 and 0.303, with 4 of 12. South versus Mexico
+gives 0.173 and 0.411, with 2 of 12.
+
+Transatlantic contrasts produce effects that are, on average, 2.5 times greater
+than those of the Peninsular contrast, and reach statistical significance after
+correction in six of the twenty-four comparisons, whereas the North-South
+contrast does not reach significance in any of the twelve. The largest
+differences are concentrated, as might be expected, in F2 of the peripheral
+vowels: F2 of /a/ between the South and Mexico ($d = -0.41$, $p < 0.001$), F2 of
+/i/ between the South and Mexico ($d = +0.40$, $p < 0.001$), and F2 of /i/
+between the North and Mexico ($d = +0.30$, $p = 0.004$). Vowel duration also
+distinguishes the North from Mexico ($d = -0.28$, $p = 0.032$), without
+distinguishing the North from the South.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_outgroup.png}
+\caption{Calibration with an external group. The three varieties overlaid in the
+normalized vowel space and the average magnitude of the effect for each pairwise
+contrast. The peninsular contrast is consistently the smallest of the three.}
+\label{fig:outgroup}
+\end{figure*}
+
+The conclusion is that the method does resolve dialectal differences when they
+exist, using the same sample, the same measures, and the same decision threshold.
+The null result in Section~\ref{sec:vowelspace} is not an artifact of a blunt
+instrument.
+
+It is worth saying here, rather than in the discussion, that these effects are
+small in absolute terms. A mean $|d|$ of 0.16 for the transatlantic contrast is
+not what the descriptive literature would lead you to expect from two varieties
+separated by an ocean and five centuries. I read that as a problem of scale
+rather than a failure of the comparison. The five-vowel system described in
+Section~\ref{sec:dialectal} gives dialectal drift very little to work with, and
+the outgroup is what makes this visible: even across the Atlantic, these vowels
+barely move. Seen that way, the null result of Section~\ref{sec:vowelspace} is
+close to what Spanish phonology would predict. This immediately suggests where
+variation should be sought instead of in the vowels. The following section
+explores this.
+
+\subsection{/s/ in coda}
+\label{sec:coda}
+
+If dialectal variation in Spanish lies primarily in the consonants, the obvious
+candidate for contrast within the Iberian Peninsula is the behaviour of /s/ in
+syllable-final position. Descriptions of the Southern speech consistently point
+to its weakening (aspiration, assimilation to the following segment, or elision)
+in contrast to the full realization retained by Northern speech
+\citep{narbona1998,gerfen2002,torreira2007}.
+
+This hypothesis has a feature that makes it particularly suitable in light of
+what we saw in Section~\ref{sec:pseudo}: it is contrasted within each speaker.
+The relevant comparison is not between the Northern /s/ and the Southern /s/, but
+between the /s/ in coda and the /s/ at the onset of the same speaker. Each
+speaker thus acts as their own control, and an imbalance in the number of clips
+per speaker cannot produce the effect, because it affects both terms of the
+comparison equally. This is exactly the type of contrast that the preliminary
+analysis could not address, due to the lack of phonemic segmentation.
+
+The alignment yields 21,639 /s/ segments from 890 speakers, of which 12,269 are
+coda segments and 9,370 are onset segments. For each segment, the spectral center
+of gravity (CoG) is measured along with duration and root-mean-square energy.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrr}
+\toprule
+Position & Measurement & North & South & $d$ & \makecell{$p$\\(Holm)} \\
+\midrule
+Coda  & CoG (Hz) & 3,118.7 & 2,417.1 & $+0.56$ & $<$0.001 \\
+Coda  & Duration & --      & --      & $+0.30$ & 0.019 \\
+Coda  & RMS      & --      & --      & $+0.07$ & 1.000 \\
+Onset & CoG (Hz) & 3,517.0 & 3,450.1 & $+0.06$ & 1.000 \\
+Onset & Duration & --      & --      & $-0.27$ & 0.033 \\
+Onset & RMS      & --      & --      & $+0.03$ & 1.000 \\
+\bottomrule
+\end{tabular}
+\caption{/s/ in North and South, per syllabic position, in speaker level. The
+dialectal contrast appears in the coda and disappears in the onset.}
+\label{tab:coda}
+\end{table}
+
+The pattern is the one predicted by the hypothesis, not the one that would
+produce a general difference in sibilant production. In coda, the Southern CoG is
+700 Hz lower than the Northern one, with $d = +0.56$. At onset, the difference
+between the same varieties is 67 Hz, with $d = +0.06$ and $p = 1.000$. The
+interaction between dialect and position on the CoG is significant
+($+196.9$ Hz, $p = 0.006$): the South does not produce distinct sibilants;
+rather, it produces distinct codas, which is the definition of a phonological
+process conditioned by position.
+
+The contrast can be summarized in a single measure per speaker, the weakening
+index, defined as the difference between the CoG of their onsets and that of
+their codas: the higher the value, the more the coda is weakened relative to the
+full realization by the same speaker. The three varieties are ranked as follows:
+North, $+359$ Hz over 369 speakers; Mexico, $+836$ Hz over 249; and South,
+$+1,022$ Hz over 165.
+
+When comparing the South versus the North and Mexico combined, $d = +0.63$ with
+$p < 0.0001$: the strongest effect in the entire study, and the only finding that
+dialectology would have predicted in advance. The ranking also replicates what
+has been described in the literature without having been imposed by the study
+design: Northern peninsular Spanish is the most conservative variety in coda
+position, Southern peninsular Spanish is the most innovative, and Mexican Spanish
+occupies an intermediate position, consistent with a distribution in which
+coastal varieties aspirate and highland varieties maintain
+\citep{hualde2005,arias2007}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_codas.png}
+\caption{Weakening of /s/ in coda: Spectral center of gravity and duration of /s/
+according to syllabic position in the three varieties, and F1 of the preceding
+vowel according to context. The distinction between varieties appears only in the
+coda.}
+\label{fig:codas}
+\end{figure*}
+
+This is the positive result of the study; its methodological reading is taken up
+in Section~\ref{sec:discussion}.
+
+\subsection{The vowel before coda /s/}
+\label{sec:precoda}
+
+The compensatory accounts introduced in Section~\ref{sec:dialectal} can now be
+tested directly, by contrasting within each speaker the vowels that precede a
+coda /s/ with the same vowels in other contexts. A total of 815 speakers provided
+data in both contexts: 397 from the North, 168 from the South, and 250 from
+Mexico.
+
+The interaction between dialect and context is significant for F1 ($+0.101$,
+$p = 0.005$), for F2 ($+0.070$, $p = 0.036$), and for duration ($+0.003$ s,
+$p = 0.036$). There is, therefore, a vowel effect associated with the /s/ coda
+context that differs across varieties.
+
+Its interpretation, however, requires precision, because it does not match what
+is described in the literature. The intra-speaker shift in F1 when moving to a
+/s/ coda context is $-0.146$ in the North and $-0.086$ in the South, in Lobanov
+z-units. Both values are negative: both varieties close the vowel before the /s/
+coda, and the South simply closes it less. There is no Southern vowel opening in
+these data; there is a generalized closing in which the South participates to a
+lesser extent. The effect is also small, $d = -0.17$, and does not reach
+significance on its own ($p = 0.063$). Nor is compensatory lengthening observed:
+the difference in duration goes in the same direction but with a smaller
+magnitude ($d = -0.10$, $p = 0.241$).
+
+It is worth noting how this result changed with sample size. With 34 Southern
+speakers, the same contrast yielded $d = -0.83$, a large effect that fit well
+with the traditional description. With 168 speakers, it is $-0.17$. The
+interaction remains significant, but the magnitude has been reduced to one-fifth.
+This is a textbook case of regression to the mean: small samples do not produce
+biased effects in a specific direction; rather, they produce extreme effects, and
+those that survive the filter of attention are systematically the largest. It is
+the same phenomenon that Section~\ref{sec:pseudo} documents from another angle,
+and it is worth keeping this in mind when reading any phonetic study based on
+just a few dozen speakers.
+
+\subsection{Exploratory analyses}
+
+Two unsupervised analyses round out the picture and, incidentally, serve to
+correct certain conclusions from the preliminary analysis.
+
+By applying $k$-means as implemented in scikit-learn \citep{pedregosa2011} to the
+normalized formants and evaluating the resulting partition against the actual
+vowel labels using the adjusted Rand index \citep{hubert1985}, normalization
+improves the recovery of the vowel categories (ARI = 0.424 with Lobanov versus
+0.332 in raw hertz) while the inclusion of bandwidths degrades it (0.357 and
+0.258, respectively). Bandwidths do not contribute to vowel structure, they
+dilute it.
+
+The preliminary analysis had concluded, based on the silhouette coefficient, that
+Spanish is organized into ``three perceptual zones'' rather than five vowels. The
+$k$-scan reproduces that result, since the silhouette does peak at $k = 3$
+(0.454), but the ARI places it at $k = 4$ (0.479), and the actual number of
+categories is five. The discrepancy has a technical, rather than phonological, explanation:
+the silhouette measure favors partitions with few compact clusters and decreases
+mechanically as dimensions are added, so it is not comparable across spaces of
+different dimensionality; the ARI, being measured against a known truth, is
+comparable \citep{rousseeuw1987}. The $k = 3$ result was a property of the metric,
+not of Spanish.
+
+When training four classifiers to predict dialect based on acoustic parameters,
+using speaker-disjoint cross-validation folds, the balanced accuracy is 0.500 in
+all four cases, that is, exactly random. Contrasts that include Mexico are only
+slightly higher (0.527 and 0.530).
+
+That this reflects the problem and not the characteristics is demonstrated by the
+positive control: the same models, applied to the same data and using the same
+partitions, predict the vowel identity of never-before-seen speakers with an
+accuracy of 0.762 compared to a chance accuracy of 0.200, that is, 3.8 times
+chance. The measures contain abundant phonetic information, but what they do not
+contain is dialectal information.
+
+The experiment also provides a second demonstration of the argument in
+Section~\ref{sec:pseudo}. If the partitions are made randomly across tokens,
+allowing the same speaker to appear in both the training and test sets, the
+accuracy in dialect prediction is inflated by $+0.20$ on a sample constructed
+like the one in the preliminary analysis. On the current sample, the same
+comparison yields an increase of $+0.004$. Speaker identity leakage only distorts
+the results when a few speakers dominate the sample. When the design is balanced,
+both validation schemes converge.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_classification.png}
+\caption{Dialect prediction against vowel identity prediction with
+speaker-disjoint cross-validation and with random partitions. Dialect sits at
+chance under both schemes in the balanced sample. Vowel identity is recovered far
+above chance for previously unseen speakers.}
+\label{fig:classification}
+\end{figure*}
+
+% =============================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+In the vowel space, Northern and Southern Peninsular Spanish are
+indistinguishable at speaker level. In the treatment of coda /s/ they separate
+clearly, with the onset serving as a null control. The large effects that the
+preliminary analysis had located in the vowels did not exist at all.
+
+The fact that one of the three results is positive and the other two are null is
+no coincidence, and the reason lies in the design rather than in dialectology.
+The contrast that survives is the only one that occurs within the speaker.
+Comparing the /s/ in coda with the /s/ at the onset of the same speaker instantly
+neutralizes everything in this corpus that is confounded with dialect: the
+anatomy of the vocal tracts, the microphone, room noise, age, gender, and reading
+style. Comparisons between groups, on the other hand, must account for all these
+factors through normalization, statistical control, and balanced sampling. The
+practical lesson is that, in a corpus of volunteers, a well-chosen intra-speaker
+contrast is more valuable than any statistical refinement applied to an overall
+comparison.
+
+This also delimits what Common Voice is good for in phonetics. The unevenness
+described in Section~\ref{sec:corpus} is not a defect to be tolerated but the
+single fact that governs how a study on this corpus must be designed.
+Consequently, the speaker identifier is not merely incidental metadata but the
+variable that determines whether an analysis is valid. Any study that samples
+clips without grouping them by speaker runs the risk of measuring individuals
+while believing it is measuring varieties, and this risk increases as the corpus
+grows larger, because the volume of data increases statistical significance
+without increasing independence. With per-speaker caps and prior aggregation, the
+same corpus supports robust inference.
+
+One caveat remains. Section~\ref{sec:vowelspace} established no difference is
+detectable, which is not the same as establishing that none exists, and the
+difference between those two statements matters here. The descriptive literature
+does not describe the Southern vowel system as slightly different from the
+Northern one; it describes it as audibly and systematically different. That
+stronger claim is the one these data fail to support, in the vowel space as a
+whole and also in the compensatory opening before coda /s/, where the effect is
+real but five times smaller than a small sample had suggested. The claim they do
+support is the consonantal one, and it carries the largest effect in the study.
+
+% =============================================================================
+\section{Limitations and conclusions}
+\label{sec:limitations}
+
+The data consists of read speech produced by volunteers under uncontrolled
+recording conditions; therefore, the conclusions do not automatically apply to
+spontaneous speech. Dialect labels are self-reported and unverifiable, and their
+granularity is coarse: the label ``Southern Peninsula'' encompasses Andalusian,
+Extremaduran, and Murcian varieties whose phonetic behavior is not homogeneous,
+which necessarily attenuates any contrast. The sex imbalance is mitigated through
+normalization but does not disappear.
+
+In terms of measurement, validation with synthetic vowels reveals a bias of
++33.7\% in the F1 estimated for /u/, so no conclusions should be based on that
+vowel; the bias is identical in both dialects and cannot generate spurious
+differences, but it can introduce noise. In the analysis of /s/, it is important
+to bear in mind that forced alignment sets a boundary for the segment even if it
+has been completely elided: a total elision is therefore measured as a segment
+with a very low center of gravity rather than as an absence, which likely
+underestimates rather than exaggerates the Southern weakening. Finally, the null
+result for vowel space constrains but does not eliminate: differences below
+$d \approx 0.24$ remain compatible with these data.
+
+Three conclusions, in the order the study reached them.
+
+First, the large effects in the initial analysis (F1 at $d = 1.34$ and B2 at
+$d = -1.43$) came from the sampling rather than from the dialects. Two
+speakers supplied 54\% and 80\% of their respective cells, and the size of the
+effects tracks how much those two are allowed to contribute. Once the speaker
+becomes the unit of inference, nothing is left of them.
+
+Second, across 461 Northern and 186 Southern speakers I find no detectable
+difference in the vowel space, in a design that would have caught anything at
+$d \geq 0.24$. The Mexican outgroup rules out the obvious alternative
+explanation: the same procedure, applied to a contrast nobody disputes, produces
+effects 2.5 times larger.
+
+Third, what separates these two varieties is consonantal. Southern speakers
+weaken coda /s/ substantially and consistently ($d = +0.63$), onset /s/ shows
+nothing, and the three varieties line up as the dialectological literature would
+predict. This was also the only contrast I tested within speakers rather than
+between groups, and I doubt that is a coincidence. On a corpus like this one, a
+comparison that each speaker controls for themselves is worth more than a more
+elaborate analysis of one that nobody controls.
+
+% =============================================================================
+\section*{Declaration on the use of LLMs}
+
+A large language model was used as a writing aid for this report, restricted to
+language editing: grammar, spelling, and phrasing of text I had already written,
+together with the correction of errors introduced when I translated my own draft
+from Spanish into English. It was also used to flag repeated passages so that I
+could shorten them.
+
+The research question, the study design, the sampling and analysis code, the
+statistical decisions, the results and their interpretation are my own work. No
+text was generated from a prompt and inserted without my having written the
+corresponding content first, and every number reported here was produced by my
+own pipeline and checked against its output tables.
+
+I keep a full record of the editing sessions and can provide it on request.
+
+% =============================================================================
+\bibliography{references}
+\bibliographystyle{acl_natbib}
+
+\end{document}
