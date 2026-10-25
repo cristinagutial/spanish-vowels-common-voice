@@ -126,7 +126,7 @@ def main():
     raw = pd.read_csv(config.TOKENS_RAW_CSV)
     log.info(f"{len(raw):,} raw vowel tokens")
 
-    df, funnel, speakers, eligible, plausible = process(raw.drop(columns=["F1_50_sexceil", "F2_50_sexceil"]))
+    df, funnel, speakers, eligible, plausible = process(raw)
 
     banner(log, "QC FUNNEL")
     start = funnel[0][1]
@@ -158,14 +158,6 @@ def main():
     log.info(f"\n  -> {config.TOKENS_CSV.relative_to(config.ROOT)}")
     save_table(funnel_df, "s5_qc_funnel", log)
     save_table(coverage, "s5_speaker_coverage", log)
-
-    # sensibilidad: lo mismo con el techo por sexo del v2.0
-    alt = raw.drop(columns=["F1_50", "F2_50"]).rename(
-        columns={"F1_50_sexceil": "F1_50", "F2_50_sexceil": "F2_50"})
-    alt, _, alt_speakers, _, _ = process(alt)
-    alt.to_csv(config.TOKENS_SEXCEIL_CSV, index=False)
-    log.info(f"\nSex-based ceiling (sensitivity): {alt_speakers['plausible vowel space']} usable speakers")
-    log.info(f"  -> {config.TOKENS_SEXCEIL_CSV.relative_to(config.ROOT)}")
 
 
 if __name__ == "__main__":

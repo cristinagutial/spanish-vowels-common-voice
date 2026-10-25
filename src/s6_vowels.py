@@ -11,7 +11,6 @@ Writes the s6_ tables.
 
 import numpy as np
 import pandas as pd
-from scipy.spatial import ConvexHull
 from statsmodels.stats.power import TTestIndPower
 
 from . import config
@@ -57,17 +56,6 @@ def contrast(cells, left, right, bound_d=None):
     out = pd.DataFrame(rows)
     out["p_holm"] = holm_correction(out["p"])
     return out
-
-
-def vowel_space_area(cells):
-    """Convex hull of a speaker's five vowel means in Lobanov space."""
-    rows = []
-    for (cid, dialect), group in cells.groupby(["client_id", "dialecto"]):
-        if group["vowel"].nunique() < len(config.VOWELS):
-            continue
-        area = ConvexHull(group[["F2", "F1"]].to_numpy()).volume  # en 2D 'volume' es el area
-        rows.append({"client_id": cid, "dialecto": dialect, "vsa": area})
-    return pd.DataFrame(rows)
 
 
 def power_table(results):
@@ -117,35 +105,15 @@ def main():
     log.info(f"  {'norte vs sur':<16} mean |d| = {h1['d'].abs().mean():.3f}  max |d| = "
              f"{h1['d'].abs().max():.3f}  significant {(h1['p_holm'] < config.ALPHA).sum()}/{len(h1)}")
 
-    banner(log, "VOWEL SPACE AREA (descriptive)")
-    vsa = vowel_space_area(cells)
-    area = pd.DataFrame([
-        dict(pair=f"{l} vs {r}", **compare(vsa[vsa["dialecto"] == l]["vsa"],
-                                           vsa[vsa["dialecto"] == r]["vsa"], (l, r)))
-        for l, r in [("norte", "sur"), ("norte", "mexico"), ("sur", "mexico")]
-    ])
-    log.info("  " + vsa.groupby("dialecto")["vsa"].agg(["mean", "size"]).round(2)
-             .to_string().replace("\n", "\n  "))
-
     power = power_table(h1)
     for _, r in power.iterrows():
         log.info(f"\n  {r['power']:.0%} power for d >= {r['detectable_d']:.2f} "
                  f"(median n: {r['n_norte']} Norte, {r['n_sur']} Sur)")
 
-    banner(log, "SENSITIVITY - same test with the sex-based ceiling of v2.0")
-    alt_cells = speaker_vowel_cells(h1_tokens(pd.read_csv(config.TOKENS_SEXCEIL_CSV)))
-    alt = contrast(alt_cells, "norte", "sur", bound_d=config.TOST_BOUND)
-    log_contrast(alt, equivalence=True)
-    log.info(f"\n  {alt['equivalent'].sum()} of {len(alt)} measures inside the bound; "
-             f"{(alt['p_holm'] < config.ALPHA).sum()} differ at p_holm < {config.ALPHA}")
-
     banner(log, "WRITING OUTPUTS")
-    save_table(alt, "s6_h1_norte_sur_sexceil", log)
     save_table(cells, "s6_h1_cells", log)
     save_table(h1, "s6_h1_norte_sur", log)
     save_table(control, "s6_h1_control", log)
-    save_table(vsa, "s6_vowel_space_area", log)
-    save_table(area, "s6_vowel_space_area_tests", log)
     save_table(power, "s6_power", log)
 
 

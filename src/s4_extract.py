@@ -285,8 +285,6 @@ def _process_speaker(job):
         return out1, out2
 
     best_f1, best_f2 = values_at(ceiling)
-    # tambien con el techo por sexo del v2.0, para el analisis de sensibilidad
-    sex_f1, sex_f2 = values_at(ceiling_for(meta["sex"]))
 
     for k, r in enumerate(rows):
         r.update({
@@ -297,8 +295,6 @@ def _process_speaker(job):
             "ceiling_Hz": ceiling,
             "F1_50": best_f1[k],
             "F2_50": best_f2[k],
-            "F1_50_sexceil": sex_f1[k],
-            "F2_50_sexceil": sex_f2[k],
         })
 
     summary = {

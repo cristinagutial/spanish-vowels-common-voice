@@ -25,3 +25,10 @@ archive_ssp/midterm/audios_filtrados/
 archive_ssp/v2_output/data/
 archive_ssp/**/*.zip
 archive_ssp/ssp_submission/Speech_Project_Cristina_Gutierrez/
+
+# archivo del v3: el audio y los ficheros de trabajo del v3.1 no van
+archive_v3/audios_v31/
+archive_v3/output_v31/work/
+archive_v3/output_v31/data/*
+!archive_v3/output_v31/data/sample_manifest.csv
+archive_v3/output_v31/extract.log

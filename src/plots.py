@@ -228,24 +228,6 @@ def sibilant_figure():
     _save(fig, "fig_sibilants")
 
 
-def ceiling_figure():
-    """Which ceiling the search picked, by declared sex."""
-    ceilings = _table("s4_ceilings")
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    bins = np.arange(config.CEILING_GRID[0] - 50, config.CEILING_GRID[-1] + 100, 100)
-    for sex, colour in [("male", "#2166ac"), ("female", "#d6604d"), ("unknown", "#999999")]:
-        values = ceilings[ceilings["sex"] == sex]["ceiling_Hz"]
-        ax.hist(values, bins=bins, alpha=0.55, color=colour,
-                label=f"{sex} (n={len(values)}, median {values.median():.0f} Hz)")
-    ax.set_xlabel("chosen formant ceiling (Hz)")
-    ax.set_ylabel("speakers")
-    ax.set_title("Formant ceiling chosen per speaker", fontsize=11, loc="left")
-    ax.legend(fontsize=9)
-    ax.grid(alpha=0.3, axis="y")
-    fig.tight_layout()
-    _save(fig, "fig_ceilings")
-
-
 def data_flow_figure():
     """How the corpus narrows from 439k clips to the analysed tokens."""
     funnel = _table("s5_qc_funnel")
@@ -287,7 +269,6 @@ def main():
     equivalence_figure()
     plural_figure()
     sibilant_figure()
-    ceiling_figure()
     data_flow_figure()
 
 

@@ -3,7 +3,6 @@ Paths, seed and thresholds for the whole pipeline.
 Everything is here so that no other script hard-codes a number.
 """
 
-import os
 from pathlib import Path
 
 # misma semilla para todo lo que sea aleatorio (muestreo, bootstrap)
@@ -11,16 +10,12 @@ SEED = 42
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# cada version tiene su carpeta de salida, para que el v3.1 no pise el v3.0:
-#   SPEECH_OUTPUT=output_v31 ./speech/bin/python run_all.py --from 2
-OUTPUT_NAME = os.environ.get("SPEECH_OUTPUT", "output")
-
 # lo que ya esta en el disco
 VALIDATED_TSV = ROOT / "validated.tsv"          # metadatos de Common Voice (corpus 26.0)
 AUDIO_DIR     = ROOT / "audios_corpus"          # clips sacados del tar del corpus 26.0
 
 # lo que produce el pipeline
-OUTPUT      = ROOT / OUTPUT_NAME
+OUTPUT      = ROOT / "output"
 DATA_DIR    = OUTPUT / "data"                   # tablas intermedias y finales
 FIGURE_DIR  = OUTPUT / "figures"                # figuras
 TABLE_DIR   = OUTPUT / "tables"                 # tablas de resultados
@@ -33,7 +28,6 @@ MFA_ALIGNED_DIR   = WORK_DIR / "mfa_aligned"    # TextGrids que devuelve MFA
 SAMPLE_CSV     = DATA_DIR / "sample_manifest.csv"    # s1: que clips y de que hablantes
 TOKENS_RAW_CSV = DATA_DIR / "vowel_tokens_raw.csv"   # s4: una fila por vocal
 TOKENS_CSV     = DATA_DIR / "vowel_tokens.csv"       # s5: ya normalizado y filtrado
-TOKENS_SEXCEIL_CSV = DATA_DIR / "vowel_tokens_sexceil.csv"  # s5: lo mismo con el techo por sexo
 SIBILANTS_CSV  = DATA_DIR / "sibilant_tokens.csv"    # s8: una fila por /s/
 
 for _d in (OUTPUT, DATA_DIR, FIGURE_DIR, TABLE_DIR, WORK_DIR):
@@ -55,8 +49,7 @@ CORE_DIALECTS = ["norte", "sur"]
 OUTGROUP_DIALECTS = ["mexico"]
 ALL_DIALECTS = CORE_DIALECTS + OUTGROUP_DIALECTS
 
-# tope de clips por hablante del v3.0, para que nadie domine una celda. El v3.1
-# usa 40 (s1_sample --cap 40); los clips con rango > 8 son los que el v3.0 no midio
+# tope de clips por hablante, para que nadie domine una celda
 MAX_CLIPS_PER_SPEAKER = 8
 
 MIN_CLIPS_PER_SPEAKER = 1
